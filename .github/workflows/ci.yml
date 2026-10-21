@@ -23,6 +23,8 @@ jobs:
     name: Build sdist and pure-python wheel
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    outputs:
+      sdist: ${{ steps.build.outputs.sdist }}
     steps:
     - uses: actions/checkout@v7
     - uses: actions/setup-python@v6
@@ -31,9 +33,11 @@ jobs:
     - name: Install build
       run: python -m pip install build
     - name: Build sdist and pure-python wheel
+      id: build
       run: |
         python -m build --sdist --outdir dist
         python -m build --wheel --config-setting=pure-python=true --outdir dist
+        echo "sdist=$(basename dist/*.tar.gz)" >> "$GITHUB_OUTPUT"
     - uses: actions/upload-artifact@v7
       with:
         name: dist
@@ -130,7 +134,7 @@ jobs:
         path: dist
     - uses: pypa/cibuildwheel@v3.2.0
       with:
-        package-dir: dist/*.tar.gz
+        package-dir: dist/${{ needs.build.outputs.sdist }}
         output-dir: wheelhouse
     - uses: actions/upload-artifact@v7
       with:
@@ -177,7 +181,7 @@ jobs:
         path: dist
     - uses: pypa/cibuildwheel@v4.2.1
       with:
-        package-dir: dist/*.tar.gz
+        package-dir: dist/${{ needs.build.outputs.sdist }}
         output-dir: wheelhouse
     - uses: actions/upload-artifact@v7
       with:
@@ -214,7 +218,7 @@ jobs:
         path: dist
     - uses: pypa/cibuildwheel@v3.2.0
       with:
-        package-dir: dist/*.tar.gz
+        package-dir: dist/${{ needs.build.outputs.sdist }}
         output-dir: wheelhouse
     - uses: actions/upload-artifact@v7
       with:
@@ -245,7 +249,7 @@ jobs:
         path: dist
     - uses: pypa/cibuildwheel@v4.2.1
       with:
-        package-dir: dist/*.tar.gz
+        package-dir: dist/${{ needs.build.outputs.sdist }}
         output-dir: wheelhouse
     - uses: actions/upload-artifact@v7
       with:
