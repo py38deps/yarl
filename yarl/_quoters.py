@@ -1,5 +1,7 @@
 """Quoting and unquoting utilities for URL parts."""
 
+from __future__ import annotations
+
 from urllib.parse import quote
 
 from ._quoting import _Quoter, _Unquoter

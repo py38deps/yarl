@@ -1,9 +1,12 @@
 """URL parsing utilities."""
 
+from __future__ import annotations
+
 import codecs
 import re
 import unicodedata
 from functools import lru_cache
+from typing import Tuple
 from urllib.parse import parse_qsl, scheme_chars, uses_netloc
 
 from ._quoters import QUOTER, UNQUOTER_PLUS
@@ -19,7 +22,7 @@ WHATWG_C0_CONTROL_OR_SPACE = (
 UNSAFE_URL_BYTES_TO_REMOVE = ["\t", "\r", "\n"]
 USES_AUTHORITY = frozenset(uses_netloc)
 
-SplitURLType = tuple[str, str, str, str, str]
+SplitURLType = Tuple[str, str, str, str, str]
 
 
 def split_url(url: str) -> SplitURLType:

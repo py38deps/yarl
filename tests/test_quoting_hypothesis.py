@@ -6,6 +6,8 @@ there via ``-m "not hypothesis"``). ``importorskip`` skips this module when
 ``hypothesis`` is not installed.
 """
 
+from __future__ import annotations
+
 import re
 from typing import TYPE_CHECKING, Any
 from urllib.parse import parse_qsl, quote, quote_plus, unquote_plus

@@ -125,6 +125,7 @@ freethreading_compatible = "True"
 # The packaging/pep517_backend/ tree has its own .ruff.toml and is linted
 # under that config via a separate pre-commit hook.
 extend-exclude = ["packaging/pep517_backend"]
+target-version = "py38"
 
 [tool.ruff.lint]
 # Keep this list small and intentional; the rest of the project still
