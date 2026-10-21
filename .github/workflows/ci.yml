@@ -85,37 +85,49 @@ jobs:
         'x86_64 aarch64 armv7l ppc64le s390x riscv64' }}
       CIBW_ARCHS_MACOS: "x86_64 arm64 universal2"
       CIBW_ARCHS_WINDOWS: "AMD64"
-      # The pinned manylinux2014/musllinux_1_2 tags are multi-arch images.
+      # CPython 3.8 is gone from the current images, pin dated per-arch tags.
+      # manylinux_2_28 / 2_31 keep the wheel tags aligned with newer
+      # versions (manylinux2014 + manylinux_2_17 + the newer policy).
       CIBW_MANYLINUX_X86_64_IMAGE: >-
         ${{ matrix.image_tag &&
-        format('quay.io/pypa/manylinux2014:{0}', matrix.image_tag) || '' }}
+        format('quay.io/pypa/manylinux_2_28_x86_64:{0}',
+        matrix.image_tag) || '' }}
       CIBW_MANYLINUX_AARCH64_IMAGE: >-
         ${{ matrix.image_tag &&
-        format('quay.io/pypa/manylinux2014:{0}', matrix.image_tag) || '' }}
-      CIBW_MANYLINUX_ARMV7L_IMAGE: >-
-        ${{ matrix.image_tag &&
-        format('quay.io/pypa/manylinux2014:{0}', matrix.image_tag) || '' }}
+        format('quay.io/pypa/manylinux_2_28_aarch64:{0}',
+        matrix.image_tag) || '' }}
       CIBW_MANYLINUX_PPC64LE_IMAGE: >-
         ${{ matrix.image_tag &&
-        format('quay.io/pypa/manylinux2014:{0}', matrix.image_tag) || '' }}
+        format('quay.io/pypa/manylinux_2_28_ppc64le:{0}',
+        matrix.image_tag) || '' }}
       CIBW_MANYLINUX_S390X_IMAGE: >-
         ${{ matrix.image_tag &&
-        format('quay.io/pypa/manylinux2014:{0}', matrix.image_tag) || '' }}
+        format('quay.io/pypa/manylinux_2_28_s390x:{0}',
+        matrix.image_tag) || '' }}
+      CIBW_MANYLINUX_ARMV7L_IMAGE: >-
+        ${{ matrix.image_tag &&
+        format('quay.io/pypa/manylinux_2_31_armv7l:{0}',
+        matrix.image_tag) || '' }}
       CIBW_MUSLLINUX_X86_64_IMAGE: >-
         ${{ matrix.image_tag &&
-        format('quay.io/pypa/musllinux_1_2:{0}', matrix.image_tag) || '' }}
+        format('quay.io/pypa/musllinux_1_2_x86_64:{0}',
+        matrix.image_tag) || '' }}
       CIBW_MUSLLINUX_AARCH64_IMAGE: >-
         ${{ matrix.image_tag &&
-        format('quay.io/pypa/musllinux_1_2:{0}', matrix.image_tag) || '' }}
+        format('quay.io/pypa/musllinux_1_2_aarch64:{0}',
+        matrix.image_tag) || '' }}
       CIBW_MUSLLINUX_ARMV7L_IMAGE: >-
         ${{ matrix.image_tag &&
-        format('quay.io/pypa/musllinux_1_2:{0}', matrix.image_tag) || '' }}
+        format('quay.io/pypa/musllinux_1_2_armv7l:{0}',
+        matrix.image_tag) || '' }}
       CIBW_MUSLLINUX_PPC64LE_IMAGE: >-
         ${{ matrix.image_tag &&
-        format('quay.io/pypa/musllinux_1_2:{0}', matrix.image_tag) || '' }}
+        format('quay.io/pypa/musllinux_1_2_ppc64le:{0}',
+        matrix.image_tag) || '' }}
       CIBW_MUSLLINUX_S390X_IMAGE: >-
         ${{ matrix.image_tag &&
-        format('quay.io/pypa/musllinux_1_2:{0}', matrix.image_tag) || '' }}
+        format('quay.io/pypa/musllinux_1_2_s390x:{0}',
+        matrix.image_tag) || '' }}
       # The test job below covers the emulated architectures.
       CIBW_TEST_SKIP: >-
         *-manylinux_aarch64 *-manylinux_armv7l *-manylinux_ppc64le
