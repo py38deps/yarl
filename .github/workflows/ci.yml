@@ -79,6 +79,12 @@ jobs:
       # `build[uv]` from pyproject.toml would need uv on every runner,
       # plain build is enough here.
       CIBW_BUILD_FRONTEND: "build"
+      # The pinned idna/multidict/propcache releases need newer Pythons
+      # on PyPI, so the 3.8/3.9 test envs use the py38deps backports.
+      CIBW_TEST_ENVIRONMENT: >-
+        ${{ (matrix.py == 'cp38' || matrix.py == 'cp39') &&
+        format('PIP_EXTRA_INDEX_URL={0}',
+        'https://py38deps.github.io/py38deps/simple/') || '' }}
       CIBW_ARCHS_LINUX: >-
         ${{ matrix.archs_linux ||
         'x86_64 aarch64 armv7l ppc64le s390x riscv64' }}
@@ -221,6 +227,12 @@ jobs:
       CIBW_BUILD: "${{ matrix.py }}-*"
       CIBW_ENABLE: "cpython-freethreading"
       CIBW_BUILD_FRONTEND: "build"
+      # The pinned idna/multidict/propcache releases need newer Pythons
+      # on PyPI, so the 3.8/3.9 test envs use the py38deps backports.
+      CIBW_TEST_ENVIRONMENT: >-
+        ${{ (matrix.py == 'cp38' || matrix.py == 'cp39') &&
+        format('PIP_EXTRA_INDEX_URL={0}',
+        'https://py38deps.github.io/py38deps/simple/') || '' }}
       CIBW_ARCHS_WINDOWS: "ARM64"
     steps:
     - uses: actions/checkout@v7
@@ -313,6 +325,14 @@ jobs:
       with:
         python-version: ${{ matrix.pyver }}
         allow-prereleases: true
+    - name: Use the py38deps package index (Python 3.8/3.9)
+      # The pinned idna/multidict/propcache releases need newer Pythons
+      # on PyPI, so the 3.8/3.9 installs use the py38deps backports.
+      if: matrix.pyver == '3.8' || matrix.pyver == '3.9'
+      shell: bash
+      run: >-
+        echo "PIP_EXTRA_INDEX_URL=https://py38deps.github.io/py38deps/simple/"
+        >> "$GITHUB_ENV"
     - name: Download the built dists
       uses: actions/download-artifact@v8
       with:
